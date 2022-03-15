@@ -129,7 +129,14 @@
             <script src="{{ asset('assets/back/libs/flot/jquery.flot.stack.js') }}"></script>
             <script src="{{ asset('assets/back/libs/flot/jquery.flot.crosshair.js') }}"></script>
             <script src="{{ asset('assets/back/libs/flot.tooltip/js/jquery.flot.tooltip.min.js') }}"></script>
-            <script src="{{ asset('assets/back/js/pages/chart/chart-page-init.js') }"></script>
+            <script src="{{ asset('assets/back/js/pages/chart/chart-page-init.js') }}"></script>
+            <!-- PLUGIN -->
+            <script src="{{ asset('assets/back/libs/jquery-validation/jquery.validate.min.js') }}"></script>
+            <script src="{{ asset('assets/back/libs/jquery-validation/localization/messages_es.js') }}"></script>
+            <!-- PLUGIN DE PAGINAS ESPECIFICAS-->
+            @yield("scriptsPlugins")
+            <!-- PLUGIN DE PAGINAS ESPECIFICAS-->
+            @yield("scripts")
 
         </body>      
   </html>
