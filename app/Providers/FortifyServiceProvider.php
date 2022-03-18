@@ -6,8 +6,10 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\Usuario;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
@@ -37,7 +39,19 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::loginView(fn () => view('theme.back.login'));
 
-        RateLimiter::for('login', function (Request $request) {
+        Fortify::authenticateUsing(function (Request $request){
+            $usuario = Usuario::where('email', $request->email)->first();
+            if ($usuario && Hash::check($request->password, $usuario->password)) {
+                $roles = $usuario->roles()->first();
+                if ($roles) {
+                    $request->session()->put('rol_slug', $roles->slug);
+                    return $usuario;
+                }
+                return false;
+            }
+        });
+
+        /*RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
 
             return Limit::perMinute(5)->by($email.$request->ip());
@@ -45,6 +59,6 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
-        });
+        });*/
     }
 }

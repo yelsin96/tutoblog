@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\backend\MenuController;
+use App\Http\Controllers\MiCuentaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,17 +16,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('theme.back.app');
-});
-
-Route::get('mi-cuenta', function () {
     return view('welcome');
 });
 
-/* Route::get('/login', function () {
-    return view('theme.back.login');
-});
+Route::get('mi-cuenta', [MiCuentaController::class, 'index'])->middleware('auth')->name('mi-cuenta');
 
-Route::get('/registro', function () {
-    return view('theme.back.registro');
-}); */
+Route::group(['prefix' => 'admin-backend', 'middleware'=>['auth', 'superadministrador']], function () {
+    /*RUTAS DE MENU*/
+    route::get('menu', [MenuController::class, 'index'])->name('menu'); 
+    route::get('menu/crear', [MenuController::class, 'crear'])->name('menu.crear');
+    route::get('menu/{id]/editar', [MenuController::class, 'editar'])->name('menu.editar');
+    route::post('menu', [MenuController::class, 'guardar'])->name('menu.guardar');
+    route::post('menu/guardar-orden', [MenuController::class, 'guardarOrden'])->name('menu.orden');
+    route::put('menu/{id}', [MenuController::class, 'actualizar'])->name('menu.actualizar');
+    route::delete('menu/{id]/eliminar', [MenuController::class, 'eliminar'])->name('menu.eliminar');
+});
