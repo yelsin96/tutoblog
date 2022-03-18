@@ -8,7 +8,13 @@ use Illuminate\Http\Request;
 class MenuController extends Controller
 {
     public function index(){
-        return view('theme.back.mi-cuenta.index');
+        /* $menus = Menu::getMenu();
+        return view('theme.back.mi-cuenta.index', compact('menus')); */
+        return view('theme.back.mi-cuenta.index'); 
+    }
+
+    public function crear(){
+        return view('theme.back.menu.crear');
     }
 
 }

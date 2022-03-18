@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Rol;
+use App\Models\backend\Rol;
 use Illuminate\Http\Request;
 
 class RolController extends Controller
